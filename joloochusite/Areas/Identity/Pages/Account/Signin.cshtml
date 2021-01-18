@@ -1,0 +1,30 @@
+@page
+@model SigninModel
+@using joloochusite.Areas.Identity.Pages
+ 
+@{
+
+}
+
+<div>
+    <br />
+    <br />
+    <h3>@Ru.SignInLabel</h3>
+
+
+
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="InputModel.PhoneNumber"></label>
+            <input asp-for="InputModel.PhoneNumber" value="+996" maxlength="14" class=" text-center form-control border-bottom border-left-0 border-right-0 border-top-0" />
+            <span asp-validation-for="InputModel.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">@Ru.GetCodeButton</button>
+        </div>
+    </form>
+
+
+</div>
+    

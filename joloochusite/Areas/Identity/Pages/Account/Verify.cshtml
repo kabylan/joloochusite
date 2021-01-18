@@ -1,0 +1,76 @@
+@page
+@model VerifyModel
+@using AlimanProject.Areas.Identity.Pages.Account
+
+
+<div>
+    <br />
+    <br />
+    <h3>@Ru.SignInLabel</h3>
+
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label>@Ru.PhoneNumberLabel</label>
+            <p class="form-control text-center border-bottom  border-left-0 border-right-0 border-top-0">@Model.PhoneNumber</p>
+        </div>
+        <div>
+            <label asp-for="Input.Code"></label>
+            <input asp-for="Input.Code" class="text-center form-control border-bottom border-left-0 border-right-0 border-top-0" />
+            <span asp-validation-for="Input.Code" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">@Ru.SignInButton</button>
+        </div>
+    </form>
+</div>
+
+@*<hr />
+
+    <h4>Didn't you receive the code?</h4>
+    <div class="row">
+        <div class="col-75">
+            <div class="form-group">
+                <label><input name="channel" type="radio" value="sms" checked="checked" />SMS</label>
+                <label><input name="channel" type="radio" value="call" />Call</label>
+            </div>
+        </div>
+        <div class="col-25">
+            <button name="form-submit" type="submit" id="resend">Resend</button>
+        </div>
+    </div>*@
+
+@*@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+
+        <script type="text/javascript">
+        $(document).ready(function(){
+            $(document).on('click', 'button#resend', function(){
+                $.ajax({
+                    url: '@Url.Content("~/api/Verify")',
+                    method: 'POST',
+                    data: {
+                      channel: $('input[name=channel]').val()
+                    },
+                    success: function(result) {
+                        if(result.isValid === true) {
+                            showMessages(['New code sent to the registered phone number']);
+                        } else {
+                            showMessages(result.errors);
+                        }
+                    },
+                    error: function() {
+                        showMessages('Request failed: check your internet connection');
+                    }
+                })
+            });
+        });
+        function showMessages(messages) {
+            $('#messages').html(
+                '<ul>' + messages.map(function(message){ return '<li>'+message+'</li>' }).join('') + '</ul>'
+            );
+        }
+        </script>
+    }*@
+
