@@ -7,16 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using joloochusite.Data;
 using joloochusite.Model;
+using joloochusite.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace joloochusite.Controllers
 {
     public class OrdersController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        SignInManager<ApplicationUser> SignInManager;
+        UserManager<ApplicationUser> UserManager;
+        ApplicationDbContext _context;
 
-        public OrdersController(ApplicationDbContext context)
+        public OrdersController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            SignInManager = signInManager;
+            UserManager = userManager;
         }
 
         // GET: Orders
@@ -50,28 +59,44 @@ namespace joloochusite.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id");
-            ViewData["EndPointId"] = new SelectList(_context.Points, "Id", "Id");
-            ViewData["StartPointId"] = new SelectList(_context.Points, "Id", "Id");
+
+            ViewData["PointId"] = _context.Points.ToList();
             return View();
         }
+
 
         // POST: Orders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CarId,StartPointId,EndPointId,StartTime,Summ")] Order order)
+        public async Task<IActionResult> Create(Order order, string StartPointString, string EndPointString)
         {
             if (ModelState.IsValid)
             {
+                // get id of points from string
+                var fromPoint = _context.Points.Where(p => p.Name.Replace(" ", "").Contains(StartPointString.Replace(" ", ""))).FirstOrDefault();
+                var toPoint = _context.Points.Where(p => p.Name.Replace(" ", "").Contains(EndPointString.Replace(" ", ""))).FirstOrDefault();
+                order.StartPointId =  fromPoint != null ? fromPoint.Id : 1;
+                order.EndPointId =  toPoint != null ? toPoint.Id : 1;
+
+                // get application user id from identity id
+                var identityUserId = UserManager.GetUserId(User);
+                var user = _context.ApplicationUsers.Where(p => p.Id == identityUserId).FirstOrDefault();
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account", new { Area = "Identity" });
+                }
+                // get car id from application user id
+                var carOfUser = _context.Cars.Where(p => p.UserId == user.AppUserId).FirstOrDefault();
+                order.CarId = carOfUser.Id;
+
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", order.CarId);
-            ViewData["EndPointId"] = new SelectList(_context.Points, "Id", "Id", order.EndPointId);
-            ViewData["StartPointId"] = new SelectList(_context.Points, "Id", "Id", order.StartPointId);
+            ViewData["PointId"] = _context.Points.ToList();
+
             return View(order);
         }
 
@@ -88,9 +113,8 @@ namespace joloochusite.Controllers
             {
                 return NotFound();
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", order.CarId);
-            ViewData["EndPointId"] = new SelectList(_context.Points, "Id", "Id", order.EndPointId);
-            ViewData["StartPointId"] = new SelectList(_context.Points, "Id", "Id", order.StartPointId);
+            ViewData["PointId"] = _context.Points.ToList();
+
             return View(order);
         }
 
@@ -99,7 +123,7 @@ namespace joloochusite.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CarId,StartPointId,EndPointId,StartTime,Summ")] Order order)
+        public async Task<IActionResult> Edit(int id, Order order)
         {
             if (id != order.Id)
             {
@@ -126,9 +150,8 @@ namespace joloochusite.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", order.CarId);
-            ViewData["EndPointId"] = new SelectList(_context.Points, "Id", "Id", order.EndPointId);
-            ViewData["StartPointId"] = new SelectList(_context.Points, "Id", "Id", order.StartPointId);
+            ViewData["PointId"] = _context.Points.ToList();
+
             return View(order);
         }
 

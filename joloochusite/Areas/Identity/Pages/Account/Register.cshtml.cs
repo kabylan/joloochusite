@@ -75,6 +75,8 @@ namespace joloochusite.Areas.Identity.Pages.Account
             [Display(Name = "Номер машины")]
             public string CarNumber { get; set; }
 
+            [Required]
+            [Display(Name = "Фото машины")]
             public IFormFile CarPhoto { get; set; }
         }
 

@@ -4,6 +4,8 @@
     ViewData["Title"] = "Register";
 }
 
+<h5 class="text-center">@Ru.SignUpLabel</h5>
+<br />
 <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
@@ -46,5 +48,7 @@
         <input asp-for="Input.CarPhoto" class="form-control" />
         <span asp-validation-for="Input.CarPhoto" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Регистрация</button>
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary">@Ru.SignUpButton</button>
+    </div>
 </form>

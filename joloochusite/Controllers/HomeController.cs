@@ -32,7 +32,7 @@ namespace joloochusite.Controllers
 
             if (SignInManager.IsSignedIn(User))
             {
-                return RedirectToAction("Chat");
+                return RedirectToAction("Index", "Orders");
             }
 
             var userid = UserManager.GetUserId(User);

@@ -1,29 +1,30 @@
 ﻿@model joloochusite.Model.Order
+@using joloochusite.Model
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
 
-<h4>Order</h4>
+<h4>Жол кошуу</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CarId" class="control-label"></label>
-                <select asp-for="CarId" class ="form-control" asp-items="ViewBag.CarId"></select>
-            </div>
+
             <div class="form-group">
                 <label asp-for="StartPointId" class="control-label"></label>
-                <select asp-for="StartPointId" class ="form-control" asp-items="ViewBag.StartPointId"></select>
+                <input type="text" name="StartPointString" class="form-control" list="Points">
             </div>
+
+
             <div class="form-group">
                 <label asp-for="EndPointId" class="control-label"></label>
-                <select asp-for="EndPointId" class ="form-control" asp-items="ViewBag.EndPointId"></select>
+                <input type="text" name="EndPointString" class="form-control" list="Points">
             </div>
+
+
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label"></label>
                 <input asp-for="StartTime" class="form-control" />
@@ -34,16 +35,24 @@
                 <input asp-for="Summ" class="form-control" />
                 <span asp-validation-for="Summ" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group d-flex justify-content-center">
+                <input type="submit" value="Кошуу" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Артка</a>
 </div>
+
+<datalist id="Points" class="form-control" hidden>
+    <option></option>
+    @foreach (Point item in ViewBag.PointId)
+    {
+        <option value="@item.Name">@item.Name</option>
+    }
+</datalist>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
