@@ -5,8 +5,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h4>Жол тизмеси</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Index">
@@ -32,24 +30,25 @@
 
 <div class="overflow-auto">
 
+    <h4>Жол тизмеси</h4>
     <table class="table">
         <thead>
             <tr>
                 @*<th>
-            @Html.DisplayNameFor(model => model.Car)
-        </th>*@
+                        @Html.DisplayNameFor(model => model.Car)
+                    </th>*@
                 @*<th>
-            @Html.DisplayNameFor(model => model.StartPoint)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndPoint)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Summ)
-        </th>
+                        @Html.DisplayNameFor(model => model.StartPoint)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EndPoint)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StartTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Summ)
+                    </th>
                 *@
                 <th></th>
             </tr>
@@ -85,27 +84,27 @@
                 </tr>
 
                 @*<tr>
-                    <td>
-                        
-                    </td>
-                    <td>
-                        
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndPoint.Id)
-                    </td>
-                    <td>
-                        
-                    </td>
-                    <td>
-                        
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>*@
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndPoint.Id)
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>*@
             }
         </tbody>
     </table>
