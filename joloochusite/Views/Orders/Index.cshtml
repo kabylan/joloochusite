@@ -1,59 +1,123 @@
 ﻿@model IEnumerable<joloochusite.Model.Order>
+@using joloochusite.Model
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h4>Жол тизмеси</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Car)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartPoint)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndPoint)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Summ)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Car.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartPoint.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndPoint.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Summ)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+            <div class="form-group">
+                <label class="control-label">Каяктан</label>
+                <input type="text" name="StartPointString" class="form-control" list="Points">
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label">Каяка</label>
+                <input type="text" name="EndPointString" class="form-control" list="Points">
+            </div>
+
+            <div class="form-group d-flex justify-content-center">
+                <input type="submit" value="Издөө" class="btn btn-outline-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="overflow-auto">
+
+    <table class="table">
+        <thead>
+            <tr>
+                @*<th>
+            @Html.DisplayNameFor(model => model.Car)
+        </th>*@
+                @*<th>
+            @Html.DisplayNameFor(model => model.StartPoint)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndPoint)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Summ)
+        </th>
+                *@
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+
+                <tr>
+                    <td>
+                        <div class="card p-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-10">
+                                    <img src="~/cars/@item.Car.ImageName" class="img-thumbnail" alt="фото">
+                                </div>
+                                <div class="col-10">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Машине марксы: @Html.DisplayFor(modelItem => item.Car.CarMark)</h5>
+                                        <p class="card-text">Жол кире: @Html.DisplayFor(modelItem => item.Summ)</p>
+                                        <p class="card-text text-muted">Каяктан: @Html.DisplayFor(modelItem => item.StartPoint.Name)</p>
+                                        <p class="card-text text-success">Каяка: @Html.DisplayFor(modelItem => item.EndPoint.Name)</p>
+                                        <p class="card-text"><small class="text-muted">Жолго чыгуу датасы: @Html.DisplayFor(modelItem => item.StartTime)</small></p>
+                                        <p class="card-text">
+                                            <a href="tel:@item.Car.User.PhoneNumber" class="btn"><span class="material-icons btn btn-success">call</span></a>
+                                            <a href="https://wa.me/@item.Car.User.PhoneNumber" class="btn btn-outline-success">Whatsapp</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                @*<tr>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndPoint.Id)
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>*@
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+
+<datalist id="Points" class="form-control" hidden>
+    <option></option>
+    @foreach (Point item in ViewBag.PointId)
+    {
+        <option value="@item.Name">@item.Name</option>
+    }
+</datalist>

@@ -159,8 +159,8 @@ namespace joloochusite.Areas.Identity.Pages.Account
                     await formFile.CopyToAsync(fileStream);
                 }
 
-                car.ImageName = formFile.FileName;
-                car.ImagePath = _appEnvironment.WebRootPath + path;
+                car.ImageName = fileName;
+                car.ImagePath = path;
 
                 _context.Update(car);
                 await _context.SaveChangesAsync();

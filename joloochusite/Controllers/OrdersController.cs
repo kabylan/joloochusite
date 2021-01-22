@@ -31,7 +31,15 @@ namespace joloochusite.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Orders.Include(o => o.Car).Include(o => o.EndPoint).Include(o => o.StartPoint);
+
+            ViewData["PointId"] = _context.Points.ToList();
+
+            var applicationDbContext = _context.Orders
+                .Include(o => o.Car)
+                    .ThenInclude(o => o.User)
+                .Include(o => o.EndPoint)
+                .Include(o => o.StartPoint);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -59,7 +67,10 @@ namespace joloochusite.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-
+            if (!SignInManager.IsSignedIn(User))
+            {
+                return LocalRedirect("/Identity/Account/Login");
+            }
             ViewData["PointId"] = _context.Points.ToList();
             return View();
         }
@@ -85,7 +96,7 @@ namespace joloochusite.Controllers
                 var user = _context.ApplicationUsers.Where(p => p.Id == identityUserId).FirstOrDefault();
                 if (user == null)
                 {
-                    return RedirectToAction("Login", "Account", new { Area = "Identity" });
+                    return RedirectPermanent("/Identity/Account/Login");
                 }
                 // get car id from application user id
                 var carOfUser = _context.Cars.Where(p => p.UserId == user.AppUserId).FirstOrDefault();
